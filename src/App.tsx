@@ -48,6 +48,11 @@ interface SalesPerformance {
 }
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState(false);
+
   const [data, setData] = useState<ApplicationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDemo, setIsDemo] = useState(false);
@@ -57,6 +62,16 @@ export default function App() {
   const [filterMonth, setFilterMonth] = useState('ALL');
   const [filterCategory, setFilterCategory] = useState<'ALL' | 'PASSANGER' | 'COMMERCIAL'>('ALL');
   const [refreshing, setRefreshing] = useState(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username === 'admin' && password === 'admin') {
+      setIsAuthenticated(true);
+      setLoginError(false);
+    } else {
+      setLoginError(true);
+    }
+  };
 
   const loadData = async () => {
     setRefreshing(true);
@@ -229,6 +244,65 @@ export default function App() {
       item.unit.toLowerCase().includes(search)
     );
   }, [dashboardData, searchTerm]);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-slate-50 relative overflow-hidden">
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-50/50 rounded-full blur-[120px]"></div>
+        <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-indigo-50/30 rounded-full blur-[100px]"></div>
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 w-full max-w-sm relative z-10"
+        >
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-white shadow-sm ring-1 ring-slate-100 text-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <LayoutDashboard className="w-8 h-8 text-blue-600" />
+            </div>
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Admin Login</h1>
+            <p className="text-[11px] text-slate-500 font-medium uppercase tracking-widest mt-2">Monitoring DFS • DSO LPG A YANI</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-5">
+            {loginError && (
+              <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl text-[11px] font-bold text-center flex items-center justify-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                Invalid Username or Password
+              </div>
+            )}
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Username</label>
+              <input 
+                type="text" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
+                placeholder="Enter username"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Password</label>
+              <input 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
+                placeholder="Enter password"
+              />
+            </div>
+            <button 
+              type="submit"
+              className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-black rounded-xl shadow-lg shadow-slate-200 transition-all uppercase tracking-widest text-[11px] mt-2 flex items-center justify-center gap-2"
+            >
+              Sign In to Dashboard
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
