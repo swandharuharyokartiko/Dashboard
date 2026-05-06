@@ -24,7 +24,9 @@ import {
   ExternalLink,
   Database,
   HelpCircle,
-  Link
+  Link,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { fetchApplications } from './services/dataService';
@@ -70,6 +72,25 @@ export default function App() {
     return localStorage.getItem('monitoring-custom-url') || '';
   });
   const [isUrlSetupOpen, setIsUrlSetupOpen] = useState(false);
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
   const handleCustomUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCustomGasUrl(e.target.value);
@@ -261,7 +282,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50">
+      <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-slate-900/50">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -272,14 +293,14 @@ export default function App() {
             <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
             <LayoutDashboard className="w-6 h-6 text-blue-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
           </div>
-          <p className="text-slate-600 font-semibold tracking-tight text-lg">Tunggu ya, Data nya lagi di Proses...</p>
+          <p className="text-slate-600 dark:text-slate-300 font-semibold tracking-tight text-lg">Tunggu ya, Data nya lagi di Proses...</p>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 text-slate-900 dark:text-white font-sans selection:bg-blue-100 selection:text-blue-900">
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-50/50 rounded-full blur-[120px]"></div>
         <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-indigo-50/30 rounded-full blur-[100px]"></div>
@@ -300,22 +321,22 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white p-8 rounded-3xl border border-slate-200 shadow-2xl w-full max-w-sm relative z-10"
+              className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm relative z-10"
             >
               <button 
                 onClick={() => setShowLoginModal(false)}
-                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100/50 hover:bg-slate-100 p-2 rounded-full transition-colors"
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 p-2 rounded-full transition-colors"
                 title="Close"
               >
                 <XCircle className="w-5 h-5" />
               </button>
               
               <div className="text-center mb-8 mt-2">
-                <div className="w-16 h-16 bg-white shadow-sm ring-1 ring-slate-100 text-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none ring-1 ring-slate-100 text-slate-800 dark:text-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <LayoutDashboard className="w-8 h-8 text-blue-600" />
                 </div>
-                <h1 className="text-2xl font-black text-slate-900 tracking-tight">Admin Login</h1>
-                <p className="text-[11px] text-slate-500 font-medium uppercase tracking-widest mt-2">Monitoring DFS • DSO LPG A YANI</p>
+                <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Admin Login</h1>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-widest mt-2">Monitoring DFS • DSO LPG A YANI</p>
               </div>
 
               <form onSubmit={handleLogin} className="space-y-5">
@@ -331,7 +352,7 @@ export default function App() {
                     type="text" 
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
+                    className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
                     placeholder="Enter username"
                   />
                 </div>
@@ -341,7 +362,7 @@ export default function App() {
                     type="password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
+                    className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
                     placeholder="Enter password"
                   />
                 </div>
@@ -358,12 +379,12 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
+      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center h-16 sm:h-20">
             {/* Logo & Title */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white border border-slate-100 rounded-xl flex items-center justify-center shadow-sm overflow-hidden">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 rounded-xl flex items-center justify-center shadow-sm dark:shadow-none overflow-hidden">
                 <img 
                   src="https://lh3.googleusercontent.com/d/1s1FM8OMSOzN4R_23a4z3CUJYSp69NMLj" 
                   alt="Logo" 
@@ -372,7 +393,7 @@ export default function App() {
                 />
               </div>
               <div className="text-left">
-                <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-none uppercase">Monitoring DFS</h1>
+                <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none uppercase">Monitoring DFS</h1>
                 <p className="text-[9px] sm:text-[10px] text-slate-400 font-bold tracking-widest mt-1">DSO LPG A YANI</p>
               </div>
             </div>
@@ -388,9 +409,17 @@ export default function App() {
 
               <div className="hidden lg:block text-right">
                 <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Last Synced</p>
-                <p className="text-[10px] font-black text-slate-600 leading-none">{lastUpdated || '--:--'} WIB</p>
+                <p className="text-[10px] font-black text-slate-600 dark:text-slate-300 leading-none">{lastUpdated || '--:--'} WIB</p>
               </div>
               
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="p-2 sm:p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors"
+                title={isDarkMode ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap'}
+              >
+                {isDarkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
+              </button>
+
               <div className="h-6 w-px bg-slate-200 hidden sm:block"></div>
               
               <button 
@@ -398,17 +427,17 @@ export default function App() {
                   if (isAuthenticated) setIsAuthenticated(false);
                   else setShowLoginModal(true);
                 }}
-                className="flex items-center gap-3 text-left hover:bg-slate-100 p-1.5 pr-2.5 rounded-full transition-colors"
+                className="flex items-center gap-3 text-left hover:bg-slate-100 dark:hover:bg-slate-800 p-1.5 pr-2.5 rounded-full transition-colors"
                 title={isAuthenticated ? 'Logout' : 'Login Administrator'}
               >
                 <div className="hidden sm:block text-right">
-                  <span className="block text-[11px] font-bold text-slate-900 leading-none">S. Haryo Kartiko</span>
+                  <span className="block text-[11px] font-bold text-slate-900 dark:text-white leading-none">S. Haryo Kartiko</span>
                   <span className="text-[9px] text-slate-400 font-medium mt-1">
                     {isAuthenticated ? 'Admin (Logged In)' : 'Admin'}
                   </span>
                 </div>
-                <div className={cn("w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border", isAuthenticated ? "bg-blue-100 border-blue-200" : "bg-slate-100 border-slate-200")}>
-                  <User className={cn("w-5 h-5", isAuthenticated ? "text-blue-600" : "text-slate-500")} />
+                <div className={cn("w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border", isAuthenticated ? "bg-blue-100 border-blue-200" : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-800")}>
+                  <User className={cn("w-5 h-5", isAuthenticated ? "text-blue-600" : "text-slate-500 dark:text-slate-400")} />
                 </div>
               </button>
             </div>
@@ -421,7 +450,7 @@ export default function App() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white border text-left border-slate-200 rounded-2xl shadow-sm overflow-hidden"
+            className="bg-white dark:bg-slate-900 border text-left border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-none overflow-hidden"
           >
             <div className="p-5 sm:p-6 pb-4">
               <div className="flex items-center gap-3 mb-6">
@@ -429,8 +458,8 @@ export default function App() {
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black text-slate-900 tracking-tight leading-none">Google Sheets Connection</h3>
-                  <p className="text-[11px] text-slate-500 font-medium mt-1">Sync your dashboard with real-time data from Google Sheets</p>
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight leading-none">Google Sheets Connection</h3>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium mt-1">Sync your dashboard with real-time data from Google Sheets</p>
                 </div>
               </div>
 
@@ -446,13 +475,13 @@ export default function App() {
                       value={customGasUrl}
                       onChange={handleCustomUrlChange}
                       placeholder="https://script.google.com/macros/s/.../exec"
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-300 font-medium text-slate-700 text-sm"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-300 font-medium text-slate-700 text-sm"
                     />
                   </div>
                   <button
                     onClick={() => loadData(customGasUrl)}
                     disabled={refreshing}
-                    className="flex-shrink-0 px-6 py-3 bg-indigo-500 hover:bg-indigo-600 border border-indigo-600 text-white rounded-xl text-xs font-bold transition-all disabled:opacity-50 shadow-sm flex items-center justify-center gap-2"
+                    className="flex-shrink-0 px-6 py-3 bg-indigo-500 hover:bg-indigo-600 border border-indigo-600 text-white rounded-xl text-xs font-bold transition-all disabled:opacity-50 shadow-sm dark:shadow-none flex items-center justify-center gap-2"
                   >
                     <RefreshCw className={cn("w-4 h-4", refreshing && "animate-spin")} />
                     {refreshing ? 'Syncing...' : 'Sync Data'}
@@ -480,8 +509,8 @@ export default function App() {
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="text-left">
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight text-left">Monitoring Dashboard</h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">Real-time application performance & distribution analysis</p>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight text-left">Monitoring Dashboard</h2>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Real-time application performance & distribution analysis</p>
           </div>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <div className="relative group">
@@ -489,7 +518,7 @@ export default function App() {
                 <Car className="w-3.5 h-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
               </div>
               <select 
-                className="pl-9 pr-8 py-2.5 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-wider text-slate-700 hover:border-blue-300 focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer shadow-sm"
+                className="pl-9 pr-8 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-[10px] font-black uppercase tracking-wider text-slate-700 hover:border-blue-300 focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer shadow-sm dark:shadow-none"
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value as any)}
               >
@@ -503,7 +532,7 @@ export default function App() {
                 <Calendar className="w-3.5 h-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
               </div>
               <select 
-                className="pl-9 pr-8 py-2.5 bg-white border border-slate-200 rounded-2xl text-[10px] font-black uppercase tracking-wider text-slate-700 hover:border-blue-300 focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer shadow-sm"
+                className="pl-9 pr-8 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-[10px] font-black uppercase tracking-wider text-slate-700 hover:border-blue-300 focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer shadow-sm dark:shadow-none"
                 value={filterMonth}
                 onChange={(e) => setFilterMonth(e.target.value)}
               >
@@ -561,12 +590,12 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"
+            className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none"
           >
             <div className="flex items-center justify-between mb-8">
               <div className="text-left">
-                <h3 className="text-sm font-bold text-slate-900">Unit Mix</h3>
-                <p className="text-[11px] text-slate-500 font-medium">Passanger vs Commercial</p>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Unit Mix</h3>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Passanger vs Commercial</p>
               </div>
             </div>
             <div className="h-[200px]">
@@ -592,11 +621,11 @@ export default function App() {
             <div className="mt-4 flex justify-center gap-6">
                <div className="flex items-center gap-2">
                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                 <span className="text-[10px] font-bold text-slate-600">Passanger</span>
+                 <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300">Passanger</span>
                </div>
                <div className="flex items-center gap-2">
                  <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                 <span className="text-[10px] font-bold text-slate-600">Commercial</span>
+                 <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300">Commercial</span>
                </div>
             </div>
           </motion.div>
@@ -605,11 +634,11 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm lg:col-span-2"
+            className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none lg:col-span-2"
           >
             <div className="mb-8 text-left">
-              <h3 className="text-sm font-bold text-slate-900">Popularitas Tenor</h3>
-              <p className="text-[11px] text-slate-500 font-medium">Pilihan tenor yang paling diminati</p>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Popularitas Tenor</h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Pilihan tenor yang paling diminati</p>
             </div>
             <div className="h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -634,12 +663,12 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.75 }}
-            className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"
+            className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none"
           >
             <div className="flex items-center justify-between mb-8">
               <div className="text-left">
-                <h3 className="text-sm font-bold text-slate-900">Kontribusi Salesman</h3>
-                <p className="text-[11px] text-slate-500 font-medium">Produktivitas per Sales Advisor</p>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Kontribusi Salesman</h3>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Produktivitas per Sales Advisor</p>
               </div>
             </div>
             <div className="h-[280px]">
@@ -672,11 +701,11 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col"
+            className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none flex flex-col"
           >
             <div className="mb-8 text-left">
-              <h3 className="text-sm font-bold text-slate-900">Status Ratio</h3>
-              <p className="text-[11px] text-slate-500 font-medium">Persentase pengajuan berdasarkan status</p>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Status Ratio</h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Persentase pengajuan berdasarkan status</p>
             </div>
             <div className="h-[280px] relative">
               <ResponsiveContainer width="100%" height="100%">
@@ -700,7 +729,7 @@ export default function App() {
                 </PieChart>
               </ResponsiveContainer>
               <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-                <span className="block text-2xl font-black text-slate-900 leading-none">
+                <span className="block text-2xl font-black text-slate-900 dark:text-white leading-none">
                   {stats.total}
                 </span>
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Aplikasi</span>
@@ -716,13 +745,13 @@ export default function App() {
           transition={{ delay: 0.85 }}
           className="grid grid-cols-1 lg:grid-cols-2 gap-8"
         >
-          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
             <div className="mb-8 text-left">
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-blue-600" />
                 Diagram: Data Statistik Aplikasi In Harian
               </h3>
-              <p className="text-[11px] text-slate-500 font-medium">Tren pengajuan unit per hari dalam periode ini</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Tren pengajuan unit per hari dalam periode ini</p>
             </div>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -763,13 +792,13 @@ export default function App() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-xl shadow-slate-200/20 overflow-hidden flex flex-col">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800/60 shadow-xl shadow-slate-200/20 overflow-hidden flex flex-col">
             <div className="mb-8 text-left">
               <div className="flex items-center gap-3 mb-1">
                 <div className="p-2 bg-indigo-50 rounded-xl">
                   <Users className="w-4 h-4 text-indigo-600" />
                 </div>
-                <h3 className="text-[11px] sm:text-xs font-black text-slate-900 uppercase tracking-widest">
+                <h3 className="text-[11px] sm:text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">
                   Analisis Per Salesman
                 </h3>
               </div>
@@ -778,28 +807,28 @@ export default function App() {
             <div className="flex-1 overflow-x-auto -mx-6 scroll-smooth scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-200">
               <table className="w-full text-left border-separate border-spacing-0 min-w-[800px]">
                 <thead>
-                  <tr className="bg-slate-50/80 backdrop-blur-sm sticky top-0 z-10">
-                    <th className="px-6 py-4 text-[9px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-100 italic sticky left-0 bg-slate-50/80 backdrop-blur-sm z-20">Nama Salesman</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-emerald-600 uppercase tracking-widest border-b border-slate-100 text-center">Approved</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-amber-600 uppercase tracking-widest border-b border-slate-100 text-center">Canceled</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-indigo-600 uppercase tracking-widest border-b border-slate-100 text-center">CA</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-rose-600 uppercase tracking-widest border-b border-slate-100 text-center">Reject</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-blue-600 uppercase tracking-widest border-b border-slate-100 text-center">Surveying</th>
-                    <th className="px-6 py-4 text-[9px] font-black text-slate-900 uppercase tracking-widest border-b border-slate-100 text-center">TOTAL IN</th>
+                  <tr className="bg-slate-50 dark:bg-slate-900/50/80 backdrop-blur-sm sticky top-0 z-10">
+                    <th className="px-6 py-4 text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 italic sticky left-0 bg-slate-50 dark:bg-slate-900/50/80 backdrop-blur-sm z-20">Nama Salesman</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-emerald-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Approved</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-amber-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Canceled</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-indigo-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">CA</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-rose-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Reject</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-blue-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Surveying</th>
+                    <th className="px-6 py-4 text-[9px] font-black text-slate-900 dark:text-white uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">TOTAL IN</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100/50">
                   {chartData.salesBar.map((sp, idx) => (
                     <tr key={sp.name} className="group hover:bg-blue-50/30 transition-all duration-200">
-                      <td className="px-6 py-4 sticky left-0 bg-white group-hover:bg-blue-50/30 transition-all z-10 border-r border-slate-50">
+                      <td className="px-6 py-4 sticky left-0 bg-white dark:bg-slate-900 group-hover:bg-blue-50/30 transition-all z-10 border-r border-slate-50">
                         <div className="flex items-center gap-3">
                           <div className={cn(
                             "w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black transition-transform group-hover:scale-110",
-                            idx === 0 ? "bg-blue-600 text-white shadow-md shadow-blue-200" : "bg-slate-100 text-slate-500"
+                            idx === 0 ? "bg-blue-600 text-white shadow-md shadow-blue-200" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
                           )}>
                             {idx + 1}
                           </div>
-                          <span className="text-[11px] font-extrabold text-slate-800 uppercase group-hover:text-blue-700">{sp.name}</span>
+                          <span className="text-[11px] font-extrabold text-slate-800 dark:text-slate-100 uppercase group-hover:text-blue-700">{sp.name}</span>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-center">
@@ -834,15 +863,15 @@ export default function App() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8 }}
-          className="bg-white rounded-[32px] border border-slate-200/60 shadow-xl shadow-slate-200/20 overflow-hidden"
+          className="bg-white dark:bg-slate-900 rounded-[32px] border border-slate-200 dark:border-slate-800/60 shadow-xl shadow-slate-200/20 overflow-hidden"
         >
-          <div className="p-6 sm:p-8 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800/50 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="text-left">
               <div className="flex items-center gap-3 mb-2">
                 <div className="p-2.5 bg-blue-50 rounded-2xl">
                   <LayoutDashboard className="w-5 h-5 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-black text-slate-900 tracking-tight">Application Explorer</h3>
+                <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Application Explorer</h3>
               </div>
               <p className="text-xs text-slate-400 font-medium ml-1">Advanced monitoring for all unit applications</p>
             </div>
@@ -853,13 +882,13 @@ export default function App() {
                 <input 
                   type="text" 
                   placeholder="Search Customer, Sales, or Unit..." 
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-[11px] font-bold focus:ring-4 focus:ring-blue-50 focus:border-blue-500 focus:bg-white outline-none transition-all placeholder:text-slate-400"
+                  className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl text-[11px] font-bold focus:ring-4 focus:ring-blue-50 focus:border-blue-500 focus:bg-white dark:bg-slate-900 outline-none transition-all placeholder:text-slate-400"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
 
-              <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200 w-full sm:w-auto">
+              <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-900/50 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 w-full sm:w-auto">
                 {['ALL', 'APPROVED', 'REJECT'].map((status) => (
                   <button
                     key={status}
@@ -867,8 +896,8 @@ export default function App() {
                     className={cn(
                       "flex-1 sm:flex-none px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all whitespace-nowrap",
                       filterStatus === status 
-                        ? "bg-white text-blue-600 shadow-sm ring-1 ring-slate-200" 
-                        : "text-slate-400 hover:text-slate-600"
+                        ? "bg-white dark:bg-slate-900 text-blue-600 shadow-sm dark:shadow-none ring-1 ring-slate-200" 
+                        : "text-slate-400 hover:text-slate-600 dark:text-slate-300"
                     )}
                   >
                     {status}
@@ -881,13 +910,13 @@ export default function App() {
           <div className="overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-200">
             <table className="w-full text-left border-separate border-spacing-0 min-w-[1000px]">
               <thead>
-                <tr className="bg-slate-50/50">
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100">Unit Details</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100">Client / Advisory</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 text-center">App In Date</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 text-center">TDP Position</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 text-center">Current Status</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100">Remarks</th>
+                <tr className="bg-slate-50 dark:bg-slate-900/50/50">
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Unit Details</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Client / Advisory</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">App In Date</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">TDP Position</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">Current Status</th>
+                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Remarks</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100/50">
@@ -910,15 +939,15 @@ export default function App() {
                         <td className="px-8 py-6">
                           <div className="flex items-center gap-4 text-left">
                             <div className={cn(
-                              "w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-sm border transition-transform group-hover:scale-110 duration-300",
+                              "w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-sm dark:shadow-none border transition-transform group-hover:scale-110 duration-300",
                               item.category === 'PASSANGER' 
                                 ? "bg-blue-50 text-blue-600 border-blue-100" 
                                 : "bg-orange-50 text-orange-600 border-orange-100"
                             )}>
-                              <Car className="w-5 h-5 shadow-sm" />
+                              <Car className="w-5 h-5 shadow-sm dark:shadow-none" />
                             </div>
                             <div className="flex flex-col">
-                              <span className="text-xs font-black text-slate-900 uppercase leading-tight group-hover:text-blue-700 transition-colors">{item.unit}</span>
+                              <span className="text-xs font-black text-slate-900 dark:text-white uppercase leading-tight group-hover:text-blue-700 transition-colors">{item.unit}</span>
                               <div className="flex items-center gap-2 mt-1.5">
                                 <span className="text-[9px] font-black bg-slate-900 text-white px-2 py-0.5 rounded-lg tracking-normal">#{item.no}</span>
                                 <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{item.category} • {item.tenor}M</span>
@@ -928,25 +957,25 @@ export default function App() {
                         </td>
                         <td className="px-8 py-6">
                           <div className="flex flex-col text-left">
-                            <span className="text-xs font-black text-slate-800 uppercase tracking-tight">{item.customerName}</span>
+                            <span className="text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-tight">{item.customerName}</span>
                             <div className="flex items-center gap-2 mt-1.5 opacity-70 group-hover:opacity-100 transition-opacity">
-                              <div className="w-5 h-5 rounded-lg bg-slate-100 flex items-center justify-center">
-                                <Users className="w-3 h-3 text-slate-500" />
+                              <div className="w-5 h-5 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                                <Users className="w-3 h-3 text-slate-500 dark:text-slate-400" />
                               </div>
-                              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wide">{item.salesman}</span>
+                              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wide">{item.salesman}</span>
                             </div>
                           </div>
                         </td>
                         <td className="px-8 py-6 text-center">
                           <div className="inline-flex flex-col items-center">
-                            <span className="px-3 py-1.5 bg-slate-50 rounded-xl text-[10px] font-black text-slate-600 border border-slate-100 group-hover:bg-white transition-all">
+                            <span className="px-3 py-1.5 bg-slate-50 dark:bg-slate-900/50 rounded-xl text-[10px] font-black text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-slate-800/50 group-hover:bg-white dark:bg-slate-900 transition-all">
                               {new Date(item.dateIn).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
                             </span>
                           </div>
                         </td>
                         <td className="px-8 py-6 text-center">
                           <div className="inline-flex flex-col items-center">
-                            <span className="px-3 py-1.5 bg-slate-50 rounded-xl text-[11px] font-black text-slate-800 border border-slate-200/50 shadow-sm group-hover:bg-white group-hover:border-blue-200 transition-all">
+                            <span className="px-3 py-1.5 bg-slate-50 dark:bg-slate-900/50 rounded-xl text-[11px] font-black text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800/50 shadow-sm dark:shadow-none group-hover:bg-white dark:bg-slate-900 group-hover:border-blue-200 transition-all">
                               {item.tdp}
                             </span>
                           </div>
@@ -955,7 +984,7 @@ export default function App() {
                           <div className="flex flex-col items-center gap-2">
                             <StatusBadge status={item.status} />
                             {item.approvalDate && (
-                              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-lg border border-emerald-100/50 shadow-sm">
+                              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-lg border border-emerald-100/50 shadow-sm dark:shadow-none">
                                 <CheckCircle2 className="w-3 h-3" />
                                 <span className="text-[9px] font-black uppercase tracking-tight">
                                   {new Date(item.approvalDate).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })}
@@ -965,7 +994,7 @@ export default function App() {
                           </div>
                         </td>
                         <td className="px-8 py-6 max-w-[250px]">
-                          <p className="text-[10px] text-slate-500 font-medium text-left leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium text-left leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">
                             {item.remarks || <span className="text-slate-300 italic font-normal">No additional records found</span>}
                           </p>
                         </td>
@@ -984,11 +1013,11 @@ export default function App() {
                           animate={{ scale: 1, opacity: 1 }}
                           className="flex flex-col items-center gap-4"
                         >
-                          <div className="w-20 h-20 bg-slate-50 rounded-[2rem] flex items-center justify-center border-2 border-dashed border-slate-200">
+                          <div className="w-20 h-20 bg-slate-50 dark:bg-slate-900/50 rounded-[2rem] flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-800">
                             <Search className="w-10 h-10 text-slate-200" />
                           </div>
                           <div className="text-center">
-                            <p className="text-base font-black text-slate-900 tracking-tight">Pencarian Tidak Ditemukan</p>
+                            <p className="text-base font-black text-slate-900 dark:text-white tracking-tight">Pencarian Tidak Ditemukan</p>
                             <p className="text-xs text-slate-400 font-medium mt-1">Coba gunakan kata kunci lain atau bersihkan filter pencarian</p>
                           </div>
                         </motion.div>
@@ -1000,7 +1029,7 @@ export default function App() {
             </table>
           </div>
           
-          <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+          <div className="px-6 py-4 bg-slate-50 dark:bg-slate-900/50/50 border-t border-slate-100 dark:border-slate-800/50 flex items-center justify-between">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
               Showing {tableData.length} of {data.length} total applications
             </span>
@@ -1013,11 +1042,11 @@ export default function App() {
       </AnimatePresence>
     </main>
 
-      <footer className="mt-20 py-12 border-t border-slate-100 bg-white">
+      <footer className="mt-20 py-12 border-t border-slate-100 dark:border-slate-800/50 bg-white dark:bg-slate-900">
         <div className="max-w-[1600px] mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-4">
-              <div className="w-9 h-9 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center p-1.5 opacity-60 hover:opacity-100 transition-opacity">
+              <div className="w-9 h-9 bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-xl flex items-center justify-center p-1.5 opacity-60 hover:opacity-100 transition-opacity">
                 <img 
                   src="https://lh3.googleusercontent.com/d/1s1FM8OMSOzN4R_23a4z3CUJYSp69NMLj" 
                   alt="Logo" 
@@ -1026,7 +1055,7 @@ export default function App() {
                 />
               </div>
               <div className="text-left">
-                <span className="block text-[11px] font-black text-slate-900 tracking-tight uppercase">Monitoring DFS</span>
+                <span className="block text-[11px] font-black text-slate-900 dark:text-white tracking-tight uppercase">Monitoring DFS</span>
                 <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest leading-tight">DSO LPG A YANI</p>
               </div>
             </div>
@@ -1051,7 +1080,7 @@ function StatCard({ title, value, icon, accentColor, delay, isString }: {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5, ease: 'easeOut' }}
       whileHover={{ y: -4, shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
-      className="bg-white p-6 rounded-[2rem] border border-slate-200/60 shadow-xl shadow-slate-200/20 relative overflow-hidden group text-left transition-all duration-300"
+      className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800/60 shadow-xl shadow-slate-200/20 relative overflow-hidden group text-left transition-all duration-300"
     >
       <div 
         className="absolute -top-4 -right-4 w-24 h-24 opacity-[0.03] group-hover:opacity-[0.07] transition-all duration-500 scale-150 pointer-events-none group-hover:rotate-12"
@@ -1070,14 +1099,14 @@ function StatCard({ title, value, icon, accentColor, delay, isString }: {
       </div>
 
       <div>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1 group-hover:text-slate-500 transition-colors">{title}</p>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1 group-hover:text-slate-500 dark:text-slate-400 transition-colors">{title}</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-slate-900 tracking-tighter group-hover:scale-105 transition-transform origin-left">{value}</span>
+            <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter group-hover:scale-105 transition-transform origin-left">{value}</span>
             {!isString && <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Units</span>}
           </div>
       </div>
       
-      <div className="mt-5 h-1.5 w-full bg-slate-50 rounded-full overflow-hidden border border-slate-100">
+      <div className="mt-5 h-1.5 w-full bg-slate-50 dark:bg-slate-900/50 rounded-full overflow-hidden border border-slate-100 dark:border-slate-800/50">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: '100%' }}
@@ -1097,11 +1126,11 @@ function StatusBadge({ status }: { status: string }) {
     'CANCELED': 'bg-orange-50 text-orange-600 ring-orange-100',
     'CREDIT ANALYST': 'bg-purple-50 text-purple-600 ring-purple-100',
     'SURVEYING': 'bg-blue-50 text-blue-600 ring-blue-100',
-    'APPLICATION IN': 'bg-slate-50 text-slate-600 ring-slate-100',
+    'APPLICATION IN': 'bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 ring-slate-100',
     'CUSTOMER VERIFICATION': 'bg-cyan-50 text-cyan-600 ring-cyan-100',
   };
 
-  const currentStyle = styles[status] || 'bg-slate-50 text-slate-500 ring-slate-100';
+  const currentStyle = styles[status] || 'bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 ring-slate-100';
 
   return (
     <span className={cn(
