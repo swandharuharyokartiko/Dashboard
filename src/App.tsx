@@ -66,8 +66,15 @@ export default function App() {
   const [filterMonth, setFilterMonth] = useState('ALL');
   const [filterCategory, setFilterCategory] = useState<'ALL' | 'PASSANGER' | 'COMMERCIAL'>('ALL');
   const [refreshing, setRefreshing] = useState(false);
-  const [customGasUrl, setCustomGasUrl] = useState('');
+  const [customGasUrl, setCustomGasUrl] = useState(() => {
+    return localStorage.getItem('monitoring-custom-url') || '';
+  });
   const [isUrlSetupOpen, setIsUrlSetupOpen] = useState(false);
+
+  const handleCustomUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomGasUrl(e.target.value);
+    localStorage.setItem('monitoring-custom-url', e.target.value);
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -446,7 +453,7 @@ export default function App() {
                     <input
                       type="text"
                       value={customGasUrl}
-                      onChange={(e) => setCustomGasUrl(e.target.value)}
+                      onChange={handleCustomUrlChange}
                       placeholder="https://script.google.com/macros/s/.../exec"
                       className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-300 font-medium text-slate-700 text-sm"
                     />

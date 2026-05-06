@@ -25,18 +25,19 @@ export interface FetchResult {
 
 export async function fetchApplications(customUrl?: string): Promise<FetchResult> {
   try {
-    console.log("Fetching data from internal API... /api/data");
-    const endpoint = customUrl ? `/api/data?url=${encodeURIComponent(customUrl)}` : "/api/data";
-    const response = await fetch(endpoint, {
-      method: "GET",
-      cache: "no-store"
+    const gasUrl = customUrl || "https://script.google.com/macros/s/AKfycbxhj2wqhEIfaS0oLqr9Y0lp5K4A2sdGuypPYVmFq7wmIhhhiZ-TfJFxtk79o6DH8_Rz/exec";
+    console.log("Fetching data from Google Apps Script...", gasUrl);
+    
+    // Add cache-busting parameter
+    const fetchUrl = new URL(gasUrl);
+    fetchUrl.searchParams.set('t', Date.now().toString());
+
+    const response = await fetch(fetchUrl.toString(), {
+      method: "GET"
     });
     
     if (!response.ok) {
       console.warn(`Server responded with ${response.status} ${response.statusText}`);
-      if (response.status === 500 || response.status === 502) {
-        return { data: MOCK_DATA, isDemo: true };
-      }
       throw new Error(`Failed to fetch from API: ${response.status}`);
     }
     
