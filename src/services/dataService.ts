@@ -18,20 +18,40 @@ const MOCK_DATA: ApplicationData[] = [
   { no: 2, dateIn: "2026-05-05", customerName: "DEO ALFAZERI", salesman: "CHAIRUL ANAM", unit: "DAIHATSU SIGRA 1.0 D MT MC", category: "PASSANGER", tdp: "20.37%", tenor: 60, status: "REJECT", remarks: "SKEMA MINIM", approvalDate: "2026-05-06" },
 ];
 
-export async function fetchApplications(): Promise<ApplicationData[]> {
+export interface FetchResult {
+  data: ApplicationData[];
+  isDemo: boolean;
+}
+
+export async function fetchApplications(): Promise<FetchResult> {
   const gasUrl = import.meta.env.VITE_GAS_URL;
   
   if (!gasUrl) {
     console.warn("VITE_GAS_URL not found, using mock data");
-    return MOCK_DATA;
+    return { data: MOCK_DATA, isDemo: true };
   }
 
   try {
-    const response = await fetch(gasUrl);
-    if (!response.ok) throw new Error("Failed to fetch from Google Sheets");
-    return await response.json();
+    const url = new URL(gasUrl);
+    url.searchParams.set('t', Date.now().toString());
+    
+    console.log("Syncing data from:", url.toString());
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      mode: "cors",
+      cache: "no-store"
+    });
+    
+    if (!response.ok) {
+      console.error(`Fetch failed with status: ${response.status}`);
+      throw new Error("Failed to fetch from Google Sheets");
+    }
+    
+    const result = await response.json();
+    console.log(`Sync successful: ${result.length} records received`);
+    return { data: result, isDemo: false };
   } catch (error) {
     console.error("Error fetching data:", error);
-    return MOCK_DATA;
+    return { data: MOCK_DATA, isDemo: true };
   }
 }
