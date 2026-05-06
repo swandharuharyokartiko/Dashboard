@@ -911,12 +911,12 @@ export default function App() {
             <table className="w-full text-left border-separate border-spacing-0 min-w-[1000px]">
               <thead>
                 <tr className="bg-slate-50 dark:bg-slate-900/50/50">
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Unit Details</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Client / Advisory</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">App In Date</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">TDP Position</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">Current Status</th>
-                  <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Remarks</th>
+                  <th className="px-5 sm:px-8 py-4 sm:py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Unit Details</th>
+                  <th className="px-5 sm:px-8 py-4 sm:py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Client / Advisory</th>
+                  <th className="px-5 sm:px-8 py-4 sm:py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">App In Date</th>
+                  <th className="px-5 sm:px-8 py-4 sm:py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">TDP Position</th>
+                  <th className="px-5 sm:px-8 py-4 sm:py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50 text-center">Current Status</th>
+                  <th className="px-5 sm:px-8 py-4 sm:py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.12em] border-b border-slate-100 dark:border-slate-800/50">Remarks</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100/50">
@@ -936,7 +936,7 @@ export default function App() {
                         }}
                         className="group hover:bg-blue-50/20 transition-colors duration-300"
                       >
-                        <td className="px-8 py-6">
+                        <td className="px-5 sm:px-8 py-5 sm:py-6">
                           <div className="flex items-center gap-4 text-left">
                             <div className={cn(
                               "w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-sm dark:shadow-none border transition-transform group-hover:scale-110 duration-300",
@@ -955,7 +955,7 @@ export default function App() {
                             </div>
                           </div>
                         </td>
-                        <td className="px-8 py-6">
+                        <td className="px-5 sm:px-8 py-5 sm:py-6">
                           <div className="flex flex-col text-left">
                             <span className="text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-tight">{item.customerName}</span>
                             <div className="flex items-center gap-2 mt-1.5 opacity-70 group-hover:opacity-100 transition-opacity">
@@ -966,21 +966,21 @@ export default function App() {
                             </div>
                           </div>
                         </td>
-                        <td className="px-8 py-6 text-center">
+                        <td className="px-5 sm:px-8 py-5 sm:py-6 text-center">
                           <div className="inline-flex flex-col items-center">
                             <span className="px-3 py-1.5 bg-slate-50 dark:bg-slate-900/50 rounded-xl text-[10px] font-black text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-slate-800/50 group-hover:bg-white dark:bg-slate-900 transition-all">
                               {new Date(item.dateIn).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
                             </span>
                           </div>
                         </td>
-                        <td className="px-8 py-6 text-center">
+                        <td className="px-5 sm:px-8 py-5 sm:py-6 text-center">
                           <div className="inline-flex flex-col items-center">
                             <span className="px-3 py-1.5 bg-slate-50 dark:bg-slate-900/50 rounded-xl text-[11px] font-black text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800/50 shadow-sm dark:shadow-none group-hover:bg-white dark:bg-slate-900 group-hover:border-blue-200 transition-all">
                               {item.tdp}
                             </span>
                           </div>
                         </td>
-                        <td className="px-8 py-6">
+                        <td className="px-5 sm:px-8 py-5 sm:py-6">
                           <div className="flex flex-col items-center gap-2">
                             <StatusBadge status={item.status} />
                             {item.approvalDate && (
@@ -993,9 +993,9 @@ export default function App() {
                             )}
                           </div>
                         </td>
-                        <td className="px-8 py-6 max-w-[250px]">
-                          <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium text-left leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">
-                            {item.remarks || <span className="text-slate-300 italic font-normal">No additional records found</span>}
+                        <td className="px-5 sm:px-8 py-5 sm:py-6 min-w-[200px] sm:min-w-[250px] sm:max-w-[300px]">
+                          <p className="text-[11px] sm:text-[10px] text-slate-600 dark:text-slate-400 font-medium text-left leading-relaxed line-clamp-none sm:line-clamp-2 group-hover:line-clamp-none transition-all">
+                            {item.remarks || <span className="text-slate-400 italic font-normal">No additional records found</span>}
                           </p>
                         </td>
                       </motion.tr>
