@@ -96,7 +96,12 @@ export default function App() {
 
   // Unified Filtered Data for EVERYTHING
   const dashboardData = useMemo(() => {
-    return data.filter(item => {
+    return data.map(item => ({
+      ...item,
+      status: (item.status || '').toString().trim().toUpperCase(),
+      salesman: (item.salesman || '').toString().trim().toUpperCase(),
+      category: (item.category || '').toString().trim().toUpperCase(),
+    })).filter(item => {
       const date = new Date(item.dateIn);
       const itemMonth = date.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
       
@@ -163,8 +168,8 @@ export default function App() {
 
     // Get all unique salesmen from the BASE data to ensure we show everyone
     const allSalesmen = Array.from(new Set(data
-      .map(item => item.salesman as string)
-      .filter(name => name && !name.toUpperCase().includes('SALESMAN'))
+      .map(item => (item.salesman || '').toString().trim().toUpperCase())
+      .filter(name => name && !name.includes('SALESMAN'))
     ));
 
     // Initialize all performance data for all salesmen with zero stats
