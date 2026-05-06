@@ -1,0 +1,6 @@
+{
+  "name": "Daihatsu Finance Dashboard",
+  "description": "Monitoring dashboard for Daihatsu Financial Services applications with Google Sheets integration",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
