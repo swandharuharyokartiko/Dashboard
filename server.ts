@@ -16,7 +16,8 @@ async function startServer() {
   // API Route to proxy Google Apps Script
   app.get("/api/data", async (req, res) => {
     console.log(`[API Request] GET /api/data at ${new Date().toISOString()}`);
-    const gasUrl = process.env.GAS_URL || "https://script.google.com/macros/s/AKfycbxhj2wqhEIfaS0oLqr9Y0lp5K4A2sdGuypPYVmFq7wmIhhhiZ-TfJFxtk79o6DH8_Rz/exec";
+    const customUrl = req.query.url as string;
+    const gasUrl = customUrl || process.env.GAS_URL || "https://script.google.com/macros/s/AKfycbxhj2wqhEIfaS0oLqr9Y0lp5K4A2sdGuypPYVmFq7wmIhhhiZ-TfJFxtk79o6DH8_Rz/exec";
     
     if (!gasUrl) {
       console.warn("GAS_URL environment variable is not defined");

@@ -21,7 +21,10 @@ import {
   RefreshCw,
   Car,
   User,
-  ExternalLink
+  ExternalLink,
+  Database,
+  HelpCircle,
+  Link
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { fetchApplications } from './services/dataService';
@@ -63,6 +66,8 @@ export default function App() {
   const [filterMonth, setFilterMonth] = useState('ALL');
   const [filterCategory, setFilterCategory] = useState<'ALL' | 'PASSANGER' | 'COMMERCIAL'>('ALL');
   const [refreshing, setRefreshing] = useState(false);
+  const [customGasUrl, setCustomGasUrl] = useState('');
+  const [isUrlSetupOpen, setIsUrlSetupOpen] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,10 +80,10 @@ export default function App() {
     }
   };
 
-  const loadData = async () => {
+  const loadData = async (urlToFetch?: string) => {
     setRefreshing(true);
     try {
-      const result = await fetchApplications();
+      const result = await fetchApplications(urlToFetch || customGasUrl || undefined);
       setData(result.data);
       setIsDemo(result.isDemo);
       setLastUpdated(new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }));
@@ -414,6 +419,67 @@ export default function App() {
       </nav>
 
       <main className="max-w-[1600px] mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+        {isAuthenticated && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white border text-left border-slate-200 rounded-2xl shadow-sm overflow-hidden"
+          >
+            <div className="p-5 sm:p-6 pb-4">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+                  <Database className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 tracking-tight leading-none">Google Sheets Connection</h3>
+                  <p className="text-[11px] text-slate-500 font-medium mt-1">Sync your dashboard with real-time data from Google Sheets</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Web App URL</label>
+                <div className="flex flex-col sm:flex-row items-stretch gap-3">
+                  <div className="relative flex-grow">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                      <Link className="w-4 h-4 text-slate-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={customGasUrl}
+                      onChange={(e) => setCustomGasUrl(e.target.value)}
+                      placeholder="https://script.google.com/macros/s/.../exec"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-50 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-300 font-medium text-slate-700 text-sm"
+                    />
+                  </div>
+                  <button
+                    onClick={() => loadData(customGasUrl)}
+                    disabled={refreshing}
+                    className="flex-shrink-0 px-6 py-3 bg-indigo-500 hover:bg-indigo-600 border border-indigo-600 text-white rounded-xl text-xs font-bold transition-all disabled:opacity-50 shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <RefreshCw className={cn("w-4 h-4", refreshing && "animate-spin")} />
+                    {refreshing ? 'Syncing...' : 'Sync Data'}
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-amber-50/50 border-t border-amber-100 p-5 sm:p-6">
+              <div className="flex gap-3">
+                <HelpCircle className="w-5 h-5 text-amber-500 flex-shrink-0" />
+                <div>
+                  <h4 className="text-[11px] font-black text-amber-800 uppercase tracking-widest mb-2">How to Connect:</h4>
+                  <ol className="list-decimal list-outside ml-4 space-y-1.5 text-xs font-medium text-amber-900/80">
+                    <li>Open your Google Sheet with sales data.</li>
+                    <li>Go to <span className="font-bold text-amber-900">Extensions {'>'} Apps Script</span>.</li>
+                    <li>Paste the integration script and click <span className="font-bold text-amber-900">Deploy {'>'} New Deployment</span>.</li>
+                    <li>Select <span className="font-bold text-amber-900">Web App</span>, set access to <span className="font-bold text-amber-900">Anyone</span>, and copy the URL here.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="text-left">
             <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight text-left">Monitoring Dashboard</h2>

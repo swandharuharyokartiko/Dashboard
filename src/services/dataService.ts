@@ -23,10 +23,11 @@ export interface FetchResult {
   isDemo: boolean;
 }
 
-export async function fetchApplications(): Promise<FetchResult> {
+export async function fetchApplications(customUrl?: string): Promise<FetchResult> {
   try {
     console.log("Fetching data from internal API... /api/data");
-    const response = await fetch("/api/data", {
+    const endpoint = customUrl ? `/api/data?url=${encodeURIComponent(customUrl)}` : "/api/data";
+    const response = await fetch(endpoint, {
       method: "GET",
       cache: "no-store"
     });
