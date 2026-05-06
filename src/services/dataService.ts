@@ -25,23 +25,33 @@ export interface FetchResult {
 
 export async function fetchApplications(): Promise<FetchResult> {
   try {
-    console.log("Fetching data from internal API...");
+    console.log("Fetching data from internal API... /api/data");
     const response = await fetch("/api/data", {
       method: "GET",
       cache: "no-store"
     });
     
     if (!response.ok) {
+      console.warn(`Server responded with ${response.status} ${response.statusText}`);
       if (response.status === 500 || response.status === 502) {
-        console.warn("Server failed to reach source, falling back to mock data");
         return { data: MOCK_DATA, isDemo: true };
       }
-      throw new Error("Failed to fetch from API");
+      throw new Error(`Failed to fetch from API: ${response.status}`);
     }
     
-    const result = await response.json();
-    console.log(`Sync successful: ${result.length} records received`);
-    return { data: result, isDemo: false };
+    const text = await response.text();
+    try {
+      const result = JSON.parse(text);
+      console.log(`Sync successful: ${result?.length || 0} records received`);
+      if (!Array.isArray(result)) {
+        console.warn("Expected array but got:", typeof result);
+        return { data: MOCK_DATA, isDemo: true };
+      }
+      return { data: result, isDemo: false };
+    } catch (e) {
+      console.error("Failed to parse JSON. Response was:", text.substring(0, 200));
+      return { data: MOCK_DATA, isDemo: true };
+    }
   } catch (error) {
     console.error("Error fetching data:", error);
     return { data: MOCK_DATA, isDemo: true };
