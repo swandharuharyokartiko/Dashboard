@@ -341,7 +341,7 @@ export default function App() {
 
               <form onSubmit={handleLogin} className="space-y-5">
                 {loginError && (
-                  <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl text-[11px] font-bold text-center flex items-center justify-center gap-2">
+                  <div className="p-3 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl text-[11px] font-bold text-center flex items-center justify-center gap-2">
                     <AlertCircle className="w-4 h-4" />
                     Invalid Username or Password
                   </div>
@@ -454,7 +454,7 @@ export default function App() {
           >
             <div className="p-5 sm:p-6 pb-4">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+                <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
@@ -490,16 +490,16 @@ export default function App() {
               </div>
             </div>
             
-            <div className="bg-amber-50/50 border-t border-amber-100 p-5 sm:p-6">
+            <div className="bg-amber-50/50 dark:bg-amber-500/5 border-t border-amber-100 dark:border-amber-500/20 p-5 sm:p-6">
               <div className="flex gap-3">
                 <HelpCircle className="w-5 h-5 text-amber-500 flex-shrink-0" />
                 <div>
-                  <h4 className="text-[11px] font-black text-amber-800 uppercase tracking-widest mb-2">How to Connect:</h4>
-                  <ol className="list-decimal list-outside ml-4 space-y-1.5 text-xs font-medium text-amber-900/80">
+                  <h4 className="text-[11px] font-black text-amber-800 dark:text-amber-500 uppercase tracking-widest mb-2">How to Connect:</h4>
+                  <ol className="list-decimal list-outside ml-4 space-y-1.5 text-xs font-medium text-amber-900/80 dark:text-amber-200/80">
                     <li>Open your Google Sheet with sales data.</li>
-                    <li>Go to <span className="font-bold text-amber-900">Extensions {'>'} Apps Script</span>.</li>
-                    <li>Paste the integration script and click <span className="font-bold text-amber-900">Deploy {'>'} New Deployment</span>.</li>
-                    <li>Select <span className="font-bold text-amber-900">Web App</span>, set access to <span className="font-bold text-amber-900">Anyone</span>, and copy the URL here.</li>
+                    <li>Go to <span className="font-bold text-amber-900 dark:text-amber-400">Extensions {'>'} Apps Script</span>.</li>
+                    <li>Paste the integration script and click <span className="font-bold text-amber-900 dark:text-amber-400">Deploy {'>'} New Deployment</span>.</li>
+                    <li>Select <span className="font-bold text-amber-900 dark:text-amber-400">Web App</span>, set access to <span className="font-bold text-amber-900 dark:text-amber-400">Anyone</span>, and copy the URL here.</li>
                   </ol>
                 </div>
               </div>
@@ -795,8 +795,8 @@ export default function App() {
           <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800/60 shadow-xl shadow-slate-200/20 overflow-hidden flex flex-col">
             <div className="mb-8 text-left">
               <div className="flex items-center gap-3 mb-1">
-                <div className="p-2 bg-indigo-50 rounded-xl">
-                  <Users className="w-4 h-4 text-indigo-600" />
+                <div className="p-2 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl">
+                  <Users className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <h3 className="text-[11px] sm:text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest">
                   Analisis Per Salesman
@@ -809,11 +809,11 @@ export default function App() {
                 <thead>
                   <tr className="bg-slate-50 dark:bg-slate-900/50/80 backdrop-blur-sm sticky top-0 z-10">
                     <th className="px-6 py-4 text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 italic sticky left-0 bg-slate-50 dark:bg-slate-900/50/80 backdrop-blur-sm z-20">Nama Salesman</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-emerald-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Approved</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-amber-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Canceled</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-indigo-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">CA</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-rose-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Reject</th>
-                    <th className="px-4 py-4 text-[9px] font-black text-blue-600 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Surveying</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-emerald-600 dark:text-emerald-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Approved</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-amber-600 dark:text-amber-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Canceled</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">CA</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-rose-600 dark:text-rose-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Reject</th>
+                    <th className="px-4 py-4 text-[9px] font-black text-blue-600 dark:text-blue-500 uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">Surveying</th>
                     <th className="px-6 py-4 text-[9px] font-black text-slate-900 dark:text-white uppercase tracking-widest border-b border-slate-100 dark:border-slate-800/50 text-center">TOTAL IN</th>
                   </tr>
                 </thead>
@@ -832,22 +832,22 @@ export default function App() {
                         </div>
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50/50 px-2.5 py-1 rounded-lg ring-1 ring-emerald-100/50">{sp.APPROVED}</span>
+                        <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/10 px-2.5 py-1 rounded-lg ring-1 ring-emerald-100/50 dark:ring-emerald-500/20">{sp.APPROVED}</span>
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <span className="text-[11px] font-bold text-amber-600 bg-amber-50/50 px-2.5 py-1 rounded-lg ring-1 ring-amber-100/50">{sp.CANCELED}</span>
+                        <span className="text-[11px] font-bold text-amber-600 dark:text-amber-400 bg-amber-50/50 dark:bg-amber-500/10 px-2.5 py-1 rounded-lg ring-1 ring-amber-100/50 dark:ring-amber-500/20">{sp.CANCELED}</span>
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <span className="text-[11px] font-bold text-indigo-600 bg-indigo-50/50 px-2.5 py-1 rounded-lg ring-1 ring-indigo-100/50">{sp['CREDIT ANALYST']}</span>
+                        <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-500/10 px-2.5 py-1 rounded-lg ring-1 ring-indigo-100/50 dark:ring-indigo-500/20">{sp['CREDIT ANALYST']}</span>
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <span className="text-[11px] font-bold text-rose-600 bg-rose-50/50 px-2.5 py-1 rounded-lg ring-1 ring-rose-100/50">{sp.REJECT}</span>
+                        <span className="text-[11px] font-bold text-rose-600 dark:text-rose-400 bg-rose-50/50 dark:bg-rose-500/10 px-2.5 py-1 rounded-lg ring-1 ring-rose-100/50 dark:ring-rose-500/20">{sp.REJECT}</span>
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <span className="text-[11px] font-bold text-blue-600 bg-blue-50/50 px-2.5 py-1 rounded-lg ring-1 ring-blue-100/50">{sp.SURVEYING}</span>
+                        <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-500/10 px-2.5 py-1 rounded-lg ring-1 ring-blue-100/50 dark:ring-blue-500/20">{sp.SURVEYING}</span>
                       </td>
                       <td className="px-6 py-4 text-center">
-                         <div className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-900 text-white text-[11px] font-black shadow-lg shadow-slate-200 group-hover:bg-blue-600 transition-colors">
+                         <div className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-black shadow-lg shadow-slate-200 dark:shadow-none group-hover:bg-blue-600 dark:group-hover:bg-blue-500 dark:group-hover:text-white transition-colors">
                             {sp.total}
                          </div>
                       </td>
@@ -868,7 +868,7 @@ export default function App() {
           <div className="p-6 sm:p-8 border-b border-slate-100 dark:border-slate-800/50 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="text-left">
               <div className="flex items-center gap-3 mb-2">
-                <div className="p-2.5 bg-blue-50 rounded-2xl">
+                <div className="p-2.5 bg-blue-50 dark:bg-blue-500/10 rounded-2xl">
                   <LayoutDashboard className="w-5 h-5 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Application Explorer</h3>
@@ -941,8 +941,8 @@ export default function App() {
                             <div className={cn(
                               "w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-sm dark:shadow-none border transition-transform group-hover:scale-110 duration-300",
                               item.category === 'PASSANGER' 
-                                ? "bg-blue-50 text-blue-600 border-blue-100" 
-                                : "bg-orange-50 text-orange-600 border-orange-100"
+                                ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-500/20" 
+                                : "bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-100 dark:border-orange-500/20"
                             )}>
                               <Car className="w-5 h-5 shadow-sm dark:shadow-none" />
                             </div>
@@ -984,7 +984,7 @@ export default function App() {
                           <div className="flex flex-col items-center gap-2">
                             <StatusBadge status={item.status} />
                             {item.approvalDate && (
-                              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-lg border border-emerald-100/50 shadow-sm dark:shadow-none">
+                              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg border border-emerald-100/50 dark:border-emerald-500/20 shadow-sm dark:shadow-none">
                                 <CheckCircle2 className="w-3 h-3" />
                                 <span className="text-[9px] font-black uppercase tracking-tight">
                                   {new Date(item.approvalDate).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })}
@@ -1121,16 +1121,16 @@ function StatCard({ title, value, icon, accentColor, delay, isString }: {
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    'APPROVED': 'bg-emerald-50 text-emerald-600 ring-emerald-100',
-    'REJECT': 'bg-red-50 text-red-600 ring-red-100',
-    'CANCELED': 'bg-orange-50 text-orange-600 ring-orange-100',
-    'CREDIT ANALYST': 'bg-purple-50 text-purple-600 ring-purple-100',
-    'SURVEYING': 'bg-blue-50 text-blue-600 ring-blue-100',
-    'APPLICATION IN': 'bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 ring-slate-100',
-    'CUSTOMER VERIFICATION': 'bg-cyan-50 text-cyan-600 ring-cyan-100',
+    'APPROVED': 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 ring-emerald-100 dark:ring-emerald-500/20',
+    'REJECT': 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 ring-red-100 dark:ring-red-500/20',
+    'CANCELED': 'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 ring-orange-100 dark:ring-orange-500/20',
+    'CREDIT ANALYST': 'bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 ring-purple-100 dark:ring-purple-500/20',
+    'SURVEYING': 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 ring-blue-100 dark:ring-blue-500/20',
+    'APPLICATION IN': 'bg-slate-50 dark:bg-slate-500/10 text-slate-600 dark:text-slate-400 ring-slate-100 dark:ring-slate-500/20',
+    'CUSTOMER VERIFICATION': 'bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 ring-cyan-100 dark:ring-cyan-500/20',
   };
 
-  const currentStyle = styles[status] || 'bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 ring-slate-100';
+  const currentStyle = styles[status] || 'bg-slate-50 dark:bg-slate-500/10 text-slate-500 dark:text-slate-400 ring-slate-100 dark:ring-slate-500/20';
 
   return (
     <span className={cn(
