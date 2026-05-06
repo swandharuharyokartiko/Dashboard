@@ -24,27 +24,19 @@ export interface FetchResult {
 }
 
 export async function fetchApplications(): Promise<FetchResult> {
-  const gasUrl = import.meta.env.VITE_GAS_URL;
-  
-  if (!gasUrl) {
-    console.warn("VITE_GAS_URL not found, using mock data");
-    return { data: MOCK_DATA, isDemo: true };
-  }
-
   try {
-    const url = new URL(gasUrl);
-    url.searchParams.set('t', Date.now().toString());
-    
-    console.log("Syncing data from:", url.toString());
-    const response = await fetch(url.toString(), {
+    console.log("Fetching data from internal API...");
+    const response = await fetch("/api/data", {
       method: "GET",
-      mode: "cors",
       cache: "no-store"
     });
     
     if (!response.ok) {
-      console.error(`Fetch failed with status: ${response.status}`);
-      throw new Error("Failed to fetch from Google Sheets");
+      if (response.status === 500 || response.status === 502) {
+        console.warn("Server failed to reach source, falling back to mock data");
+        return { data: MOCK_DATA, isDemo: true };
+      }
+      throw new Error("Failed to fetch from API");
     }
     
     const result = await response.json();
