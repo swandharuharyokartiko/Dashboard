@@ -390,15 +390,6 @@ export default function App() {
                 <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Last Synced</p>
                 <p className="text-[10px] font-black text-slate-600 leading-none">{lastUpdated || '--:--'} WIB</p>
               </div>
-
-              <button 
-                onClick={loadData}
-                disabled={refreshing}
-                className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white rounded-xl text-[10px] sm:text-xs font-bold transition-all disabled:opacity-50 shadow-sm"
-              >
-                <RefreshCw className={cn("w-3.5 h-3.5", refreshing && "animate-spin")} />
-                <span className="hidden sm:inline">{refreshing ? 'Syncing...' : 'Sync Data'}</span>
-              </button>
               
               <div className="h-6 w-px bg-slate-200 hidden sm:block"></div>
               
