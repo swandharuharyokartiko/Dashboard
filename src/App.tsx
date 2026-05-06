@@ -49,6 +49,7 @@ interface SalesPerformance {
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false);
@@ -67,6 +68,7 @@ export default function App() {
     e.preventDefault();
     if (username === 'admin' && password === 'admin') {
       setIsAuthenticated(true);
+      setShowLoginModal(false);
       setLoginError(false);
     } else {
       setLoginError(true);
@@ -245,65 +247,6 @@ export default function App() {
     );
   }, [dashboardData, searchTerm]);
 
-  if (!isAuthenticated) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-50 relative overflow-hidden">
-        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-50/50 rounded-full blur-[120px]"></div>
-        <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-indigo-50/30 rounded-full blur-[100px]"></div>
-        
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 w-full max-w-sm relative z-10"
-        >
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-white shadow-sm ring-1 ring-slate-100 text-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <LayoutDashboard className="w-8 h-8 text-blue-600" />
-            </div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Admin Login</h1>
-            <p className="text-[11px] text-slate-500 font-medium uppercase tracking-widest mt-2">Monitoring DFS • DSO LPG A YANI</p>
-          </div>
-
-          <form onSubmit={handleLogin} className="space-y-5">
-            {loginError && (
-              <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl text-[11px] font-bold text-center flex items-center justify-center gap-2">
-                <AlertCircle className="w-4 h-4" />
-                Invalid Username or Password
-              </div>
-            )}
-            <div>
-              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Username</label>
-              <input 
-                type="text" 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
-                placeholder="Enter username"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Password</label>
-              <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
-                placeholder="Enter password"
-              />
-            </div>
-            <button 
-              type="submit"
-              className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-black rounded-xl shadow-lg shadow-slate-200 transition-all uppercase tracking-widest text-[11px] mt-2 flex items-center justify-center gap-2"
-            >
-              Sign In to Dashboard
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </form>
-        </motion.div>
-      </div>
-    );
-  }
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-50">
@@ -329,6 +272,79 @@ export default function App() {
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-50/50 rounded-full blur-[120px]"></div>
         <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-indigo-50/30 rounded-full blur-[100px]"></div>
       </div>
+
+      <AnimatePresence>
+        {showLoginModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+              onClick={() => setShowLoginModal(false)}
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="bg-white p-8 rounded-3xl border border-slate-200 shadow-2xl w-full max-w-sm relative z-10"
+            >
+              <button 
+                onClick={() => setShowLoginModal(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100/50 hover:bg-slate-100 p-2 rounded-full transition-colors"
+                title="Close"
+              >
+                <XCircle className="w-5 h-5" />
+              </button>
+              
+              <div className="text-center mb-8 mt-2">
+                <div className="w-16 h-16 bg-white shadow-sm ring-1 ring-slate-100 text-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <LayoutDashboard className="w-8 h-8 text-blue-600" />
+                </div>
+                <h1 className="text-2xl font-black text-slate-900 tracking-tight">Admin Login</h1>
+                <p className="text-[11px] text-slate-500 font-medium uppercase tracking-widest mt-2">Monitoring DFS • DSO LPG A YANI</p>
+              </div>
+
+              <form onSubmit={handleLogin} className="space-y-5">
+                {loginError && (
+                  <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl text-[11px] font-bold text-center flex items-center justify-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    Invalid Username or Password
+                  </div>
+                )}
+                <div>
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Username</label>
+                  <input 
+                    type="text" 
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
+                    placeholder="Enter username"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Password</label>
+                  <input 
+                    type="password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 text-sm"
+                    placeholder="Enter password"
+                  />
+                </div>
+                <button 
+                  type="submit"
+                  className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl shadow-lg shadow-blue-200 transition-all uppercase tracking-widest text-[11px] mt-2 flex items-center justify-center gap-2"
+                >
+                  Sign In to Administrator
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6">
@@ -374,15 +390,24 @@ export default function App() {
               
               <div className="h-6 w-px bg-slate-200 hidden sm:block"></div>
               
-              <div className="flex items-center gap-3">
+              <button 
+                onClick={() => {
+                  if (isAuthenticated) setIsAuthenticated(false);
+                  else setShowLoginModal(true);
+                }}
+                className="flex items-center gap-3 text-left hover:bg-slate-100 p-1.5 pr-2.5 rounded-full transition-colors"
+                title={isAuthenticated ? 'Logout' : 'Login Administrator'}
+              >
                 <div className="hidden sm:block text-right">
                   <span className="block text-[11px] font-bold text-slate-900 leading-none">S. Haryo Kartiko</span>
-                  <span className="text-[9px] text-slate-400 font-medium mt-1">Admin</span>
+                  <span className="text-[9px] text-slate-400 font-medium mt-1">
+                    {isAuthenticated ? 'Admin (Logged In)' : 'Admin'}
+                  </span>
                 </div>
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
-                  <User className="w-5 h-5 text-slate-500" />
+                <div className={cn("w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border", isAuthenticated ? "bg-blue-100 border-blue-200" : "bg-slate-100 border-slate-200")}>
+                  <User className={cn("w-5 h-5", isAuthenticated ? "text-blue-600" : "text-slate-500")} />
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </div>
