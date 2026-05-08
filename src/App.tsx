@@ -53,12 +53,7 @@ interface SalesPerformance {
 }
 
 export default function App() {
-  const [isUserAuthorized, setIsUserAuthorized] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('user-authorized') === 'true';
-    }
-    return false;
-  });
+  const [isUserAuthorized, setIsUserAuthorized] = useState(false);
   const [userIdInput, setUserIdInput] = useState('');
   const [userPassInput, setUserPassInput] = useState('');
   const [userLoginError, setUserLoginError] = useState(false);
@@ -295,7 +290,6 @@ export default function App() {
     if (userIdInput === 'D660' && userPassInput === 'AYANI') {
       setIsUserAuthorized(true);
       setUserLoginError(false);
-      localStorage.setItem('user-authorized', 'true');
     } else {
       setUserLoginError(true);
     }
@@ -517,7 +511,6 @@ export default function App() {
                 <button
                   onClick={() => {
                     setIsUserAuthorized(false);
-                    localStorage.removeItem('user-authorized');
                     window.location.reload(); // Refresh to ensure everything is reset
                   }}
                   className="p-2 sm:p-2.5 rounded-full hover:bg-rose-50 dark:hover:bg-rose-500/10 text-slate-500 hover:text-rose-600 transition-colors"
