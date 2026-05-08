@@ -328,11 +328,11 @@ export default function App() {
           className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm relative z-10"
         >
           <div className="text-center mb-8 mt-2">
-            <div className="w-16 h-16 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none ring-1 ring-slate-100 dark:ring-slate-800 text-slate-800 dark:text-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 overflow-hidden">
+            <div className="w-48 h-48 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none ring-1 ring-slate-100 dark:ring-slate-800 text-slate-800 dark:text-slate-100 rounded-[2.5rem] flex items-center justify-center mx-auto mb-3 overflow-hidden">
               <img 
-                src="https://lh3.googleusercontent.com/d/1s1FM8OMSOzN4R_23a4z3CUJYSp69NMLj" 
+                src="https://lh3.googleusercontent.com/d/1avP22bXEdisaHxsekkfQUiQIjpa8Z4eu" 
                 alt="Logo" 
-                className="w-full h-full object-contain p-2"
+                className="w-full h-full object-contain p-4"
                 referrerPolicy="no-referrer"
               />
             </div>
@@ -471,9 +471,9 @@ export default function App() {
           <div className="flex justify-between items-center h-16 sm:h-20">
             {/* Logo & Title */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 rounded-xl flex items-center justify-center shadow-sm dark:shadow-none overflow-hidden">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 rounded-xl flex items-center justify-center shadow-sm dark:shadow-none overflow-hidden hover:scale-105 transition-transform duration-300">
                 <img 
-                  src="https://lh3.googleusercontent.com/d/1s1FM8OMSOzN4R_23a4z3CUJYSp69NMLj" 
+                  src="https://lh3.googleusercontent.com/d/1avP22bXEdisaHxsekkfQUiQIjpa8Z4eu" 
                   alt="Logo" 
                   className="w-full h-full object-contain p-2"
                   referrerPolicy="no-referrer"
@@ -1146,9 +1146,9 @@ export default function App() {
         <div className="max-w-[1600px] mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-4">
-              <div className="w-9 h-9 bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-xl flex items-center justify-center p-1.5 opacity-60 hover:opacity-100 transition-opacity">
+              <div className="w-12 h-12 bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50 rounded-xl flex items-center justify-center p-2 opacity-60 hover:opacity-100 transition-opacity">
                 <img 
-                  src="https://lh3.googleusercontent.com/d/1s1FM8OMSOzN4R_23a4z3CUJYSp69NMLj" 
+                  src="https://lh3.googleusercontent.com/d/1avP22bXEdisaHxsekkfQUiQIjpa8Z4eu" 
                   alt="Logo" 
                   className="w-full h-full object-contain"
                   referrerPolicy="no-referrer"
