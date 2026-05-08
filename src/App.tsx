@@ -53,6 +53,16 @@ interface SalesPerformance {
 }
 
 export default function App() {
+  const [isUserAuthorized, setIsUserAuthorized] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('user-authorized') === 'true';
+    }
+    return false;
+  });
+  const [userIdInput, setUserIdInput] = useState('');
+  const [userPassInput, setUserPassInput] = useState('');
+  const [userLoginError, setUserLoginError] = useState(false);
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [username, setUsername] = useState('');
@@ -280,6 +290,17 @@ export default function App() {
     );
   }, [dashboardData, searchTerm]);
 
+  const handleUserLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userIdInput === 'D660' && userPassInput === 'AYANI') {
+      setIsUserAuthorized(true);
+      setUserLoginError(false);
+      localStorage.setItem('user-authorized', 'true');
+    } else {
+      setUserLoginError(true);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-slate-900/50">
@@ -294,6 +315,78 @@ export default function App() {
             <LayoutDashboard className="w-6 h-6 text-blue-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
           </div>
           <p className="text-slate-600 dark:text-slate-300 font-semibold tracking-tight text-lg">Tunggu ya, Data nya lagi di Proses...</p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (!isUserAuthorized) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden font-sans">
+        <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+          <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-50/50 rounded-full blur-[120px]"></div>
+          <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-indigo-50/30 rounded-full blur-[100px]"></div>
+        </div>
+        
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm relative z-10"
+        >
+          <div className="text-center mb-8 mt-2">
+            <div className="w-16 h-16 bg-white dark:bg-slate-900 shadow-sm dark:shadow-none ring-1 ring-slate-100 dark:ring-slate-800 text-slate-800 dark:text-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 overflow-hidden">
+              <img 
+                src="https://lh3.googleusercontent.com/d/1s1FM8OMSOzN4R_23a4z3CUJYSp69NMLj" 
+                alt="Logo" 
+                className="w-full h-full object-contain p-2"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight uppercase leading-none">Monitoring DFS</h1>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-widest mt-2">DSO LPG A YANI • Login Access</p>
+          </div>
+
+          <form onSubmit={handleUserLogin} className="space-y-5">
+            {userLoginError && (
+              <div className="p-3 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl text-[11px] font-bold text-center flex items-center justify-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                ID User atau Password Salah
+              </div>
+            )}
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">ID USER</label>
+              <input 
+                type="text" 
+                value={userIdInput}
+                onChange={(e) => setUserIdInput(e.target.value)}
+                className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 dark:text-slate-100 text-sm"
+                placeholder="Masukkan ID User"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">PASSWORD</label>
+              <input 
+                type="password" 
+                value={userPassInput}
+                onChange={(e) => setUserPassInput(e.target.value)}
+                className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-300 font-bold text-slate-700 dark:text-slate-100 text-sm"
+                placeholder="Masukkan Password"
+                required
+              />
+            </div>
+            <button 
+              type="submit"
+              className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl shadow-lg shadow-blue-200 dark:shadow-none transition-all uppercase tracking-widest text-[11px] mt-2 flex items-center justify-center gap-2"
+            >
+              Buka Dashboard
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </form>
+          
+          <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 text-center">
+            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em]">Monitoring Status Application In</p>
+          </div>
         </motion.div>
       </div>
     );
@@ -419,6 +512,20 @@ export default function App() {
               >
                 {isDarkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
               </button>
+
+              {isUserAuthorized && (
+                <button
+                  onClick={() => {
+                    setIsUserAuthorized(false);
+                    localStorage.removeItem('user-authorized');
+                    window.location.reload(); // Refresh to ensure everything is reset
+                  }}
+                  className="p-2 sm:p-2.5 rounded-full hover:bg-rose-50 dark:hover:bg-rose-500/10 text-slate-500 hover:text-rose-600 transition-colors"
+                  title="Logout Dashboard"
+                >
+                  <XCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              )}
 
               <div className="h-6 w-px bg-slate-200 hidden sm:block"></div>
               
